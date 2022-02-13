@@ -5,8 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import r3mote.Backend.SQLDataBase;
 
-public class LoginController {
+public class LoginController extends SQLDataBase {
 
     @FXML
     private Button addUserBtn;
@@ -21,8 +22,9 @@ public class LoginController {
     private Button loginBtn;
 
     @FXML
-    void addUserOnClick(ActionEvent event) {
+    void addUserOnClick(ActionEvent event) throws Exception {
 
+        createUser(fieldUserName.getText(), fieldPassword.getText());
     }
 
     @FXML
