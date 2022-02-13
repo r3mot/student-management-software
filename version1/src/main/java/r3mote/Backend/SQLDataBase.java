@@ -1,4 +1,4 @@
-package r3mote.SQL;
+package r3mote.Backend;
 
 import java.io.File;
 import java.sql.Connection;
@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 
-public class DataBase {
+public class SQLDataBase {
     
     public boolean databaseExists(String dbFilePath){
         File dbFile = new File(dbFilePath);
