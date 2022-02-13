@@ -56,7 +56,7 @@
             <Font size="53.0" />
          </font>
       </Label>
-      <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="580.0" layoutY="176.0" prefHeight="23.0" prefWidth="144.0" text="Invalid Login. Please try again!" textAlignment="CENTER" textFill="#e80000">
+      <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="580.0" layoutY="176.0" prefHeight="23.0" prefWidth="144.0" text="Invalid Login. Please try again!" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="10.0" />
          </font>

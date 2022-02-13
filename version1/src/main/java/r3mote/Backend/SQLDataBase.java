@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 
 public class SQLDataBase {
+
     
     public boolean databaseExists(String dbFilePath){
         File dbFile = new File(dbFilePath);
@@ -40,10 +41,8 @@ public class SQLDataBase {
 
         try{
 
-            Security aes = new Security();
-            aes.init();
-            String encryptedPassword = aes.decrypt(rawPassword);
-            System.out.println(encryptedPassword);
+            String encryptedPassword = Security.encrypt(rawPassword.getBytes(), rawPassword);
+            System.out.println("Created user with password: " + encryptedPassword);
 
             connection = getConnection();
             pstmt = connection.prepareStatement("INSERT INTO Staff (username, password) VALUES (?,?)");
@@ -63,27 +62,31 @@ public class SQLDataBase {
 
     public boolean login(String u, String p) throws Exception{
 
+        Security secure = new Security();
         Connection connection;
         PreparedStatement pstmt;
         ResultSet rs;
 
         try{
-
-            Security aes = new Security();
-            aes.init();
-
             connection = getConnection();
-            
+
             pstmt = connection.prepareStatement("SELECT username, password FROM staff WHERE username=?");
             pstmt.setString(1, u);
             rs = pstmt.executeQuery();
 
-            String user = "", pass = "";
             while(rs.next()){
-                user = rs.getString("username");
-                pass = rs.getString("password");
+                String usernameQuery = rs.getString("username");
+                String passwordQuery = rs.getString("password");
 
-                String decryptedPassword = aes.decrypt(pass);
+                // --------------------------------------------------------------------
+                System.out.println("Username entered by user: " + usernameQuery);
+                System.out.println("Password entered by user: " + p);
+                System.out.println("Password to be decrypted: " + passwordQuery);
+                // --------------------------------------------------------------------
+
+                String decryptedPassword = Security.decrypt(passwordQuery, p);
+
+                System.out.println("Decrypted qeury: " + decryptedPassword);
                 if(decryptedPassword.equals(p)){
                     System.out.println("Login success");
                     return true;

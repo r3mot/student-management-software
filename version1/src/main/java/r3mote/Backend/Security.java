@@ -1,67 +1,71 @@
 package r3mote.Backend;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
-
-public class Security {
+public class Security extends SecurityUtil{
     
-    private SecretKey key;
-    private int KEY_SIZE = 128;
-    private byte[] IV;
-    private int T_LEN = 128;            //tag length
+    private static final String ENCRYPT_ALGO = "AES/GCM/NoPadding";
+
+    private static final int TAG_LENGTH_BIT = 128; // must be one of {128, 120, 112, 104, 96}
+    private static final int IV_LENGTH_BYTE = 12;
+    private static final int SALT_LENGTH_BYTE = 16;
+    private static final Charset UTF_8 = StandardCharsets.UTF_8;
+
+    // return a base64 encoded AES encrypted text
+    public static String encrypt(byte[] pText, String password) throws Exception {
 
 
-    public void init() throws Exception {
-        KeyGenerator generator = KeyGenerator.getInstance("AES");
-        generator.init(KEY_SIZE);
-        key = generator.generateKey();
-        System.out.println(key);
+        byte[] salt = getRandomIV(SALT_LENGTH_BYTE);
+        byte[] iv = getRandomIV(IV_LENGTH_BYTE);
 
-    }
-    
-    public String encrypt(String rawPassword) throws Exception {
 
-        byte[] passwordInBytes = rawPassword.getBytes();
-        Cipher encryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
-        encryptionCipher.init(Cipher.ENCRYPT_MODE, key);
-        IV = encryptionCipher.getIV();
-        byte[] encryptedBytes = encryptionCipher.doFinal(passwordInBytes);
-        return encode(encryptedBytes);
+        SecretKey keyFromPassword = getKeyFromPassword(password.toCharArray(), salt);
 
-    }
+        Cipher cipher = Cipher.getInstance(ENCRYPT_ALGO);   
+        cipher.init(Cipher.ENCRYPT_MODE, keyFromPassword, new GCMParameterSpec(TAG_LENGTH_BIT, iv));
 
-    public String decrypt(String encryptedPassword) throws Exception{
+        byte[] cipherText = cipher.doFinal(pText);
+        byte[] cipherTextWithIvSalt = ByteBuffer.allocate(iv.length + salt.length + cipherText.length)
+                .put(iv)
+                .put(salt)
+                .put(cipherText)
+                .array();
 
-        byte[] passwordInBytes = decode(encryptedPassword);
-        Cipher decryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
-        GCMParameterSpec spec = new GCMParameterSpec(T_LEN,IV);
-        decryptionCipher.init(Cipher.DECRYPT_MODE, key, spec);
-        byte[] decryptedBytes = decryptionCipher.doFinal(passwordInBytes);
-
-        return new String(decryptedBytes);
-    }
-    private byte[] decode(String data){
-        return Base64.getDecoder().decode(data);
+        return Base64.getEncoder().encodeToString(cipherTextWithIvSalt);
     }
 
-    private String encode(byte[] data){
-        return Base64.getEncoder().encodeToString(data);
+    // we need the same password, salt and iv to decrypt it
+    public static String decrypt(String cText, String password) throws Exception {
+
+        byte[] decode = Base64.getDecoder().decode(cText.getBytes(UTF_8));
+        
+        ByteBuffer bb = ByteBuffer.wrap(decode);
+
+        byte[] iv = new byte[IV_LENGTH_BYTE];
+        bb.get(iv);
+
+        byte[] salt = new byte[SALT_LENGTH_BYTE];
+        bb.get(salt);
+
+        byte[] cipherText = new byte[bb.remaining()];
+        bb.get(cipherText);
+
+        SecretKey aesKeyFromPassword = getKeyFromPassword(password.toCharArray(), salt);
+
+        Cipher cipher = Cipher.getInstance(ENCRYPT_ALGO);
+        cipher.init(Cipher.DECRYPT_MODE, aesKeyFromPassword, new GCMParameterSpec(TAG_LENGTH_BIT, iv));
+
+        byte[] plainText = cipher.doFinal(cipherText);
+
+        return new String(plainText, UTF_8);
+
     }
 
-    //dbg
-    public void printTest() throws Exception{
-
-        String pass = "hi";
-        String encrypted = encrypt(pass);
-        String decryption = decrypt(encrypted);
-        System.out.println("Original: " + pass);
-        System.out.println("Encrypted Password : " + encrypted);
-        System.out.println("Decrypted Password : " + decryption);
-    }
 }
