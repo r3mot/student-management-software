@@ -8,7 +8,7 @@ public class SceneController {
 
     @FXML
     public void switchToHome(ActionEvent event) throws IOException{
-        App.setRoot("homescene");
+        App.setRoot("homepage");
     }
 
     @FXML

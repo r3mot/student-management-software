@@ -13,52 +13,48 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="644.0" prefWidth="899.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="r3mote.LoginController">
    <children>
-      <AnchorPane prefHeight="644.0" prefWidth="411.0" style="-fx-background-color: #297eeb;">
+      <AnchorPane prefHeight="644.0" prefWidth="416.0" style="-fx-background-color: #297eeb;">
          <children>
-            <Label alignment="CENTER" layoutX="15.0" layoutY="400.0" prefHeight="35.0" prefWidth="383.0" text="Student Management System" textAlignment="JUSTIFY" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="15.0" layoutY="449.0" prefHeight="35.0" prefWidth="383.0" text="Don't Have An Account?" textAlignment="CENTER" textFill="WHITE">
                <font>
-                  <Font name="Segoe UI" size="24.0" />
+                  <Font name="Microsoft Yi Baiti" size="24.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="134.0" layoutY="435.0" prefHeight="35.0" prefWidth="144.0" text="Remote Solutions" textAlignment="JUSTIFY" textFill="#fcfcfc">
-               <font>
-                  <Font name="Segoe UI" size="18.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="390.0" fitWidth="363.0" layoutX="25.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="390.0" fitWidth="363.0" layoutX="14.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../../../../../../Users/micha/OneDrive/Desktop/vecteezy_idea-concept-in-flat-design-employees-painting-a-big_.jpg" />
                </image>
             </ImageView>
+            <Button fx:id="addUserBtn" layoutX="110.0" layoutY="503.0" mnemonicParsing="false" onAction="#addUserOnClick" prefHeight="23.0" prefWidth="171.0" text="Sign Up" />
          </children>
          <padding>
             <Insets top="20.0" />
          </padding>
       </AnchorPane>
-      <TextField fx:id="fieldUserName" layoutX="527.0" layoutY="234.0" prefHeight="25.0" prefWidth="258.0" promptText="username" />
-      <PasswordField id="tfPassword" fx:id="fieldPassword" layoutX="527.0" layoutY="310.0" prefHeight="25.0" prefWidth="258.0" promptText="password" />
-      <Button fx:id="loginBtn" layoutX="713.0" layoutY="365.0" mnemonicParsing="false" onAction="#loginOnClick" prefHeight="25.0" prefWidth="68.0" text="Login" />
-      <Hyperlink alignment="CENTER" layoutX="523.0" layoutY="366.0" prefHeight="23.0" prefWidth="114.0" text="Forgot Password" textAlignment="CENTER" />
-      <Button fx:id="addUserBtn" layoutX="637.0" layoutY="365.0" mnemonicParsing="false" onAction="#addUserOnClick" prefHeight="25.0" prefWidth="68.0" text="Add User" />
+      <TextField fx:id="fieldUserName" layoutX="523.0" layoutY="279.0" prefHeight="25.0" prefWidth="258.0" promptText="username" />
+      <PasswordField id="tfPassword" fx:id="fieldPassword" layoutX="523.0" layoutY="355.0" prefHeight="25.0" prefWidth="258.0" promptText="password" />
+      <Button fx:id="loginBtn" layoutX="709.0" layoutY="410.0" mnemonicParsing="false" onAction="#loginOnClick" prefHeight="25.0" prefWidth="68.0" text="Login" />
+      <Hyperlink fx:id="forgotPasswordLink" alignment="CENTER" layoutX="519.0" layoutY="411.0" onAction="#forgotPasswordOnClick" prefHeight="23.0" prefWidth="114.0" text="Forgot Password" textAlignment="CENTER" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="541.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="523.0" layoutY="211.0" prefHeight="23.0" prefWidth="144.0" text="Username: ">
+      <Label layoutX="523.0" layoutY="256.0" prefHeight="23.0" prefWidth="144.0" text="username:">
          <font>
             <Font name="Segoe UI" size="10.0" />
          </font>
       </Label>
-      <Label layoutX="527.0" layoutY="287.0" prefHeight="23.0" prefWidth="144.0" text="Password:">
+      <Label layoutX="523.0" layoutY="332.0" prefHeight="23.0" prefWidth="144.0" text="password:">
          <font>
             <Font name="Segoe UI" size="10.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="442.0" layoutY="74.0" prefHeight="77.0" prefWidth="429.0" text="Welcome Back!">
-         <font>
-            <Font size="53.0" />
-         </font>
-      </Label>
-      <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="580.0" layoutY="176.0" prefHeight="23.0" prefWidth="144.0" text="Invalid Login. Please try again!" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="415.0" layoutY="221.0" prefHeight="23.0" prefWidth="487.0" text="Invalid Login. Please try again!" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="10.0" />
+         </font>
+      </Label>
+      <Button fx:id="guest_login_btn" layoutX="633.0" layoutY="410.0" mnemonicParsing="false" onAction="#guestLoginOnClick" prefHeight="25.0" prefWidth="68.0" text="Guest" />
+      <Label alignment="CENTER" layoutX="397.0" layoutY="153.0" prefHeight="54.0" prefWidth="504.0" text="Sunrise Academy">
+         <font>
+            <Font name="Microsoft Yi Baiti" size="36.0" />
          </font>
       </Label>
    </children>

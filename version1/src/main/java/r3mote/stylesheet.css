@@ -1,0 +1,78 @@
+
+/* Login Screen Styling */
+#addUserBtn{
+    -fx-background-color: yellow;
+    -fx-text-fill: black;
+    -fx-background-radius: 30;
+
+}
+#addUserBtn:hover {
+    -fx-background-color: #d2ae40;
+
+}
+#loginBtn{
+    -fx-background-color: #6193b5;
+    -fx-text-fill: white;
+    -fx-background-radius: 30;
+}
+
+#loginBtn:hover{
+    -fx-background-color: #33476c;
+}
+
+#guest_login_btn{
+    -fx-background-color: #6193b5;
+    -fx-text-fill: white;
+    -fx-background-radius: 30;
+}
+#guest_login_btn:hover{
+    -fx-background-color: #33476c;
+    -fx-text-fill: white;
+}
+#forgotPasswordLink{
+    -fx-text-fill: black;
+}
+#forgotPasswordLink:hover{
+    -fx-text-fill: red;
+}
+.label{
+    -fx-font-family: 'Verdana'; 
+    
+
+}
+  
+
+/* Home Page */
+#home_button{
+    -fx-background-color:  #0346fe;
+    -fx-text-fill: white;
+    -fx-text-alignment: left;
+    -fx-padding: 20px;
+}
+#home_button:hover{
+    -fx-background-color: #1d2225;
+    -fx-text-fill: white;
+    -fx-text-alignment: left;
+    -fx-padding: 20px;
+} 
+
+#student_anchor{
+    -fx-background-color: orange;
+    -fx-background-size: 1200 900;
+    -fx-background-radius: 30;
+
+}
+
+#teacher_anchor{
+    -fx-background-color: blue;
+    -fx-background-size: 1200 900;
+    -fx-background-radius: 30;
+}
+#attendance_anchor{
+    -fx-background-color: red;
+    -fx-background-size: 1200 900;
+    -fx-background-radius: 30;
+}
+
+
+  

@@ -1,48 +1,49 @@
 package r3mote.Backend;
 
-import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
-public class SQLDataBase {
-
+public class Staff {
     
-    public boolean databaseExists(String dbFilePath){
-        File dbFile = new File(dbFilePath);
-        return dbFile.exists();
+    private String userName;
+    private String password;
+
+    public String getUserName(){
+        return userName;
     }
 
-    public static Connection GetConnection() throws ClassNotFoundException {
-
-        Connection connection = null;
-        try {
-
-            Class.forName("org.sqlite.JDBC");
-            String db = "jdbc:sqlite:C:/sqlite3/db/students.db";
-            connection = DriverManager.getConnection(db);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } 
-        return connection;
+    public String getPassword(){
+        return password;
     }
 
-    public boolean addUser(String username, String rawPassword) throws Exception
-    {
+    public void setUserName(String userName){
+        this.userName = userName;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
+    }
+
+    public Staff(String userName, String password){
+        super();
+        this.userName = userName;
+        this.password = password;
+    }
+
+    public boolean registerUser(Staff newStaff) throws Exception{
+
         Connection connection;
         PreparedStatement pstmt;
 
         try{
-            connection = GetConnection();
+            connection = SQLDataBase.GetConnection();
 
             pstmt = connection.prepareStatement("INSERT INTO Staff (username, password) VALUES (?,?)");
 
-            String encryptedPassword = Security.encrypt(rawPassword.getBytes(), rawPassword);
-            pstmt.setString(1, username);
+            String encryptedPassword = Security.encrypt(newStaff.getPassword().getBytes(), newStaff.getPassword());
+            pstmt.setString(1, newStaff.getUserName());
             pstmt.setString(2, encryptedPassword);
             pstmt.executeUpdate();
 
@@ -51,11 +52,15 @@ public class SQLDataBase {
 
             return true;
         }catch(SQLException e){
-            e.printStackTrace();
+            if(e.toString().equals("Tag mismatch!"))
+                System.out.println("Duplicate");
+            //e.printStackTrace();
         }
         return false;
+    
     }
-    public boolean validateLogin(String user, String pass) throws Exception{
+
+    public boolean validateUser(Staff staff) throws Exception{
 
         Connection connection;
         PreparedStatement pstmt;
@@ -66,21 +71,21 @@ public class SQLDataBase {
 
         try{
 
-            connection = GetConnection();
+            connection = SQLDataBase.GetConnection();
 
             String query = "SELECT username, password FROM staff WHERE username=?";
             pstmt = connection.prepareStatement(query);
 
-            pstmt.setString(1, user);
+            pstmt.setString(1, staff.getUserName());
             dbQuery = pstmt.executeQuery();
 
             while(dbQuery.next()){
 
                 usernameQuery = dbQuery.getString("username");
                 passwordQuery = dbQuery.getString("password");
-                decryptedPassword = Security.decrypt(passwordQuery, pass);
+                decryptedPassword = Security.decrypt(passwordQuery, staff.getPassword());
 
-                if(decryptedPassword.equals(pass) && usernameQuery.equals(user)){
+                if(decryptedPassword.equals(staff.getPassword()) && usernameQuery.equals(staff.getUserName())){
                     isValidLogin = true;
                 }
             }
